@@ -44,14 +44,14 @@ st.title("💰 Податковий калькулятор + Звірка")
 
 col_in1, col_in2 = st.columns(2)
 with col_in1:
-    amount = st.number_input("Фактично надійшло (USD):", min_value=0.0, value=100.30, step=10.0)
+    amount = st.number_input("Фактично надійшло (USD):", min_value=0.0, value=800.30, step=10.0)
 with col_in2:
     date_val = st.date_input("Дата курсу НБУ:", datetime.now())
 
 st.header("2. Звірка з відпрацьованим часом")
 col_next1, col_next2 = st.columns(2)
 with col_next1:
-    hours_worked = st.number_input("Кількість відпрацьованих годин:", min_value=0.0, value=150.0, step=1.0)
+    hours_worked = st.number_input("Кількість відпрацьованих годин:", min_value=0.0, value=200.0, step=1.0)
 with col_next2:
     BONUS_USD = 35.0
     st.info(f"Сталий бонус: **${BONUS_USD}**")
@@ -113,14 +113,31 @@ if st.button("Розрахувати все", type="primary"):
         col_res1, col_res2, col_res3 = st.columns(3)
         col_res1.metric(label="Зароблено (Години + Бонус)", value=f"${earned_usd:,.2f}")
         col_res2.metric(label="Чистий прибуток", value=f"${net_usd:,.2f}")
-        delta_color_usd = "normal" if diff_usd >= 0 else "inverse"
-        col_res3.metric(label="Різниця", value=f"${diff_usd:,.2f}", delta=f"{diff_usd:,.2f} USD",
-                        delta_color=delta_color_usd)
+        col_res3.metric(label="Різниця", value=f"${diff_usd:,.2f}", delta=f"{diff_usd:,.2f} USD")
 
         st.write("**В гривнях (UAH):**")
         col_res4, col_res5, col_res6 = st.columns(3)
         col_res4.metric(label="Зароблено (Години + Бонус)", value=f"{earned_uah:,.2f} ₴")
         col_res5.metric(label="Чистий прибуток", value=f"{net_uah:,.2f} ₴")
-        delta_color_uah = "normal" if diff_uah >= 0 else "inverse"
-        col_res6.metric(label="Різниця", value=f"{diff_uah:,.2f} ₴", delta=f"{diff_uah:,.2f} UAH",
-                        delta_color=delta_color_uah)
+        col_res6.metric(label="Різниця", value=f"{diff_uah:,.2f} ₴", delta=f"{diff_uah:,.2f} UAH")
+
+        st.divider()
+        st.subheader("Покриття податків для заробленої суми")
+
+        required_gross_uah = (earned_uah + 1902.34) / 0.94
+        required_gross_usd = required_gross_uah / rate
+
+        tax_coverage_usd = required_gross_usd - earned_usd
+        tax_coverage_uah = required_gross_uah - earned_uah
+
+        st.write("**Скільки необхідно отримати (Gross), щоб після всіх податків на руках залишилась зароблена сума:**")
+
+        col_req1, col_req2, col_req3 = st.columns(3)
+        col_req1.metric(label="Бажана сума (Зароблено)", value=f"${earned_usd:,.2f}")
+        col_req2.metric(label="Добавити на податки", value=f"${tax_coverage_usd:,.2f}")
+        col_req3.metric(label="Необхідне надходження", value=f"${required_gross_usd:,.2f}")
+
+        col_req4, col_req5, col_req6 = st.columns(3)
+        col_req4.metric(label="Бажана сума (Зароблено)", value=f"{earned_uah:,.2f} ₴")
+        col_req5.metric(label="Добавити на податки", value=f"{tax_coverage_uah:,.2f} ₴")
+        col_req6.metric(label="Необхідне надходження", value=f"{required_gross_uah:,.2f} ₴")
