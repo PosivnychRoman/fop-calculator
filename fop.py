@@ -44,14 +44,14 @@ st.title("💰 Податковий калькулятор + Звірка")
 
 col_in1, col_in2 = st.columns(2)
 with col_in1:
-    amount = st.number_input("Фактично надійшло (USD):", min_value=0.0, value=919.30, step=10.0)
+    amount = st.number_input("Фактично надійшло (USD):", min_value=0.0, value=100.30, step=10.0)
 with col_in2:
     date_val = st.date_input("Дата курсу НБУ:", datetime.now())
 
 st.header("2. Звірка з відпрацьованим часом")
 col_next1, col_next2 = st.columns(2)
 with col_next1:
-    hours_worked = st.number_input("Кількість відпрацьованих годин:", min_value=0.0, value=223.0, step=1.0)
+    hours_worked = st.number_input("Кількість відпрацьованих годин:", min_value=0.0, value=150.0, step=1.0)
 with col_next2:
     BONUS_USD = 35.0
     st.info(f"Сталий бонус: **${BONUS_USD}**")
