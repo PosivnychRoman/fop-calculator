@@ -100,7 +100,7 @@ if st.button("Розрахувати все", type="primary"):
         st.divider()
         st.subheader("Результат звірки")
 
-        earned_usd = (hours_worked * 3.5) + BONUS_USD
+        earned_usd = (hours_worked * 4.5) + BONUS_USD
         earned_uah = earned_usd * rate
 
         net_usd = data["USD"]["net"]
